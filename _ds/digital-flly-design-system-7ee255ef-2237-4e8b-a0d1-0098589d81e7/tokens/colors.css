@@ -1,0 +1,80 @@
+/* Colors ───────────────────────────────────────────────
+   The Digital Flly palette is grounded in five earth tones pulled from
+   the brand spec: ink, clay, bronze, sand, paper. Everything else
+   is a tint, shade, or semantic alias built on those five. */
+
+:root {
+  /* ── Base palette (the five anchor colors) ── */
+  --ink:    #27150d; /* darkest — coffee-bean / espresso */
+  --clay:   #5a3e28; /* rich brown — the brand's primary */
+  --bronze: #866e56; /* mid brown — secondary, hover surfaces */
+  --sand:   #b2a28e; /* warm taupe — subtle accents, borders */
+  --paper:  #ede9e7; /* off-white cream — the canvas */
+
+  /* ── Neutrals (warm-tinted, never pure grey) ── */
+  --paper-50:  #faf8f7;
+  --paper-100: #f3efed;
+  --paper-200: #ede9e7;
+  --paper-300: #e0d9d4;
+  --paper-400: #c9bdb3;
+  --paper-500: #b2a28e;
+  --paper-600: #8c7c69;
+  --paper-700: #5a4838;
+  --paper-800: #3a2618;
+  --paper-900: #27150d;
+  --paper-950: #170c06;
+  --white:     #ffffff;
+
+  /* ── Brand ramps ── */
+  --clay-50:  #f6efe9;
+  --clay-100: #e9d8c8;
+  --clay-200: #ceb094;
+  --clay-300: #ae8966;
+  --clay-400: #866e56;
+  --clay-500: #5a3e28;
+  --clay-600: #4a3220;
+  --clay-700: #3a2718;
+  --clay-800: #2a1b10;
+  --clay-900: #27150d;
+
+  /* ── Semantic — kept earthy on purpose ── */
+  --success:    #5a6a3a; /* moss */
+  --success-bg: #e9ecdf;
+  --warning:    #b5832a; /* amber */
+  --warning-bg: #f6e9cf;
+  --danger:     #8c3a2a; /* terracotta */
+  --danger-bg:  #f3dcd5;
+  --info:       #4a5c6a; /* slate */
+  --info-bg:    #dee4e8;
+
+  /* ── Semantic aliases (use these in components) ── */
+  --bg:               var(--paper-200);
+  --bg-elevated:      var(--paper-50);
+  --bg-sunken:        var(--paper-300);
+  --bg-inverse:       var(--ink);
+
+  --surface:          var(--white);
+  --surface-muted:    var(--paper-100);
+  --surface-strong:   var(--paper-300);
+  --surface-inverse:  var(--ink);
+
+  --border-subtle:    color-mix(in oklab, var(--sand) 35%, transparent);
+  --border:           color-mix(in oklab, var(--sand) 65%, transparent);
+  --border-strong:    var(--bronze);
+  --border-inverse:   var(--paper-700);
+
+  --text-strong:      var(--ink);
+  --text:             var(--clay-700);
+  --text-muted:       var(--clay-400);
+  --text-subtle:      var(--paper-600);
+  --text-inverse:     var(--paper-100);
+  --text-on-brand:    var(--paper-50);
+
+  --brand:            var(--clay-500);
+  --brand-hover:      var(--clay-600);
+  --brand-press:      var(--clay-700);
+  --brand-soft:       var(--clay-50);
+  --brand-soft-text:  var(--clay-700);
+
+  --focus-ring:       color-mix(in oklab, var(--clay-500) 45%, transparent);
+}

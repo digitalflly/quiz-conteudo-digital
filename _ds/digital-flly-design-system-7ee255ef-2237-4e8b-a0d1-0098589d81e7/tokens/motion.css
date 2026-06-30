@@ -1,0 +1,12 @@
+/* Motion ── slow, deliberate, no bounces. Digital Flly eases on
+   everything: a gentle "in-out" curve, never spring. */
+:root {
+  --ease-out:     cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);    /* @kind other */
+  --ease-soft:    cubic-bezier(0.4, 0, 0.2, 1);      /* @kind other */
+
+  --duration-fast:   120ms; /* @kind other */
+  --duration-base:   200ms; /* @kind other */
+  --duration-slow:   360ms; /* @kind other */
+  --duration-slower: 600ms; /* @kind other */
+}

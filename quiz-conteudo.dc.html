@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/radii.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/motion.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/tokens/base.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/components/core/components.css">
+  <link rel="stylesheet" href="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/styles.css">
+  <script src="_ds/digital-flly-design-system-7ee255ef-2237-4e8b-a0d1-0098589d81e7/_ds_bundle.js"></script>
+  <style>
+    @keyframes flyspin { to { transform: rotate(360deg); } }
+    @keyframes flyfade { from { transform: translateY(9px); } to { transform: translateY(0); } }
+    .fly-scroll::-webkit-scrollbar { width: 0; height: 0; }
+    .fly-scroll { scrollbar-width: none; }
+  </style>
+</helmet>
+
+<div style="min-height:100%;width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--paper-200);font-family:var(--font-sans);">
+  <div style="position:relative;width:393px;max-width:calc(100vw - 32px);aspect-ratio:9 / 16;max-height:calc(100dvh - 24px);background:#27150d;border-radius:30px;overflow:hidden;box-shadow:0 30px 70px -20px color-mix(in oklab, var(--ink) 70%, transparent), 0 0 0 1px color-mix(in oklab, var(--ink) 40%, transparent);display:flex;flex-direction:column;">
+
+    <!-- top bar (digitalflly header — centralizado em todas as páginas) -->
+    <div style="display:flex;align-items:center;justify-content:space-between;height:77px;padding:0 18px;flex-shrink:0;position:relative;z-index:6;">
+      <span style="position:absolute;left:0;right:0;text-align:center;font-family:var(--font-sans);font-size:16px;font-weight:400;letter-spacing:0.01em;color:var(--paper-50);pointer-events:none;">digital<strong style="font-weight:700;">flly</strong></span>
+      <span style="position:relative;z-index:1;width:34px;display:flex;align-items:center;">
+        <sc-if value="{{ canGoBack }}">
+          <button type="button" onClick="{{ onBack }}" aria-label="voltar" style="background:none;border:none;color:var(--sand);font-size:24px;line-height:1;cursor:pointer;padding:6px;margin:-6px;">&#8592;</button>
+        </sc-if>
+      </span>
+      <span style="position:relative;z-index:1;display:flex;justify-content:flex-end;align-items:center;min-width:34px;">
+        <sc-if value="{{ showProgress }}">
+          <span style="font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);">{{ stepLabel }}</span>
+        </sc-if>
+      </span>
+    </div>
+
+    <!-- progress track -->
+    <sc-if value="{{ showProgress }}">
+      <div style="height:3px;width:100%;background:rgba(250,248,247,0.13);flex-shrink:0;">
+        <div style="height:100%;background:var(--paper-50);width:{{ progressPct }};transition:width .4s cubic-bezier(.2,.7,.2,1);"></div>
+      </div>
+    </sc-if>
+
+    <!-- content -->
+    <div class="fly-scroll" key="{{ screenKey }}" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:30px 26px 40px;animation:flyfade .34s cubic-bezier(.2,.7,.2,1);">
+      <div style="margin:auto 0;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;">
+
+      <!-- CAPA -->
+      <sc-if value="{{ isCover }}" hint-placeholder-val="{{ true }}">
+        <h1 style="font-family:var(--font-display);font-weight:400;font-size:46px;line-height:1.0;letter-spacing:-0.01em;color:var(--paper-50);margin:6px 0 6px;text-wrap:balance;">o que falta no seu feed?</h1>
+        <p style="font-size:16.5px;line-height:1.6;color:var(--paper-50);font-weight:500;margin:0;max-width:30ch;">seu conteúdo não está vendendo e você acha que precisa postar mais, e isso é uma mentira!</p>
+        <p style="font-size:15.5px;line-height:1.6;color:rgba(237,233,231,0.8);margin:0;max-width:30ch;">conteúdo igual só vende um produto. descubra o que falta no seu feed pra vender o resto da esteira.</p>
+        <button type="button" onClick="{{ start }}" style="margin-top:14px;width:100%;background:var(--paper-50);color:var(--clay-700);border:none;border-radius:14px;padding:17px 24px;font-family:var(--font-sans);font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 8px 22px -8px color-mix(in oklab, var(--ink) 70%, transparent);" style-active="transform:translateY(1px);background:var(--paper-100);">começar diagnóstico</button>
+      </sc-if>
+
+      <!-- NOME -->
+      <sc-if value="{{ isName }}">
+        <div style="font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--sand);">pra começar</div>
+        <h2 style="font-family:var(--font-display);font-weight:400;font-size:36px;line-height:1.05;letter-spacing:-0.01em;color:var(--paper-50);margin:6px 0 2px;">como você se chama?</h2>
+        <input type="text" value="{{ nameInput }}" onInput="{{ onNameInput }}" placeholder="seu nome" autoComplete="off" style="width:100%;box-sizing:border-box;text-align:center;background:transparent;border:none;border-bottom:1.5px solid rgba(178,162,142,0.45);color:var(--paper-50);font-family:var(--font-sans);font-size:22px;font-weight:500;padding:10px 4px;outline:none;" style-focus="border-bottom-color:var(--paper-50);" />
+        <sc-if value="{{ error }}"><div style="font-size:13px;color:#e8b9a8;margin-top:-6px;">{{ error }}</div></sc-if>
+        <button type="button" onClick="{{ submitName }}" style="margin-top:14px;width:100%;background:var(--paper-50);color:var(--clay-700);border:none;border-radius:14px;padding:16px 24px;font-family:var(--font-sans);font-size:16px;font-weight:600;cursor:pointer;" style-active="transform:translateY(1px);background:var(--paper-100);">continuar</button>
+      </sc-if>
+
+      <!-- CONTATO (logo após o nome) -->
+      <sc-if value="{{ isContact }}">
+        <div style="font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--sand);">{{ contactEyebrow }}</div>
+        <h2 style="font-family:var(--font-display);font-weight:400;font-size:30px;line-height:1.1;letter-spacing:-0.01em;color:var(--paper-50);margin:4px 0 6px;text-wrap:balance;max-width:22ch;">{{ contactTitle }}</h2>
+        <div style="display:flex;flex-direction:column;gap:18px;width:100%;margin-top:4px;">
+          <input type="text" value="{{ igInput }}" onInput="{{ onIg }}" placeholder="@ do seu instagram" autoComplete="off" style="width:100%;box-sizing:border-box;text-align:center;background:transparent;border:none;border-bottom:1.5px solid rgba(178,162,142,0.45);color:var(--paper-50);font-family:var(--font-sans);font-size:18px;padding:10px 4px;outline:none;" style-focus="border-bottom-color:var(--paper-50);" />
+          <input type="tel" value="{{ waInput }}" onInput="{{ onWa }}" placeholder="seu whatsapp" autoComplete="off" style="width:100%;box-sizing:border-box;text-align:center;background:transparent;border:none;border-bottom:1.5px solid rgba(178,162,142,0.45);color:var(--paper-50);font-family:var(--font-sans);font-size:18px;padding:10px 4px;outline:none;" style-focus="border-bottom-color:var(--paper-50);" />
+        </div>
+        <sc-if value="{{ error }}"><div style="font-size:13px;color:#e8b9a8;margin-top:2px;">{{ error }}</div></sc-if>
+        <button type="button" onClick="{{ submitContact }}" style="margin-top:16px;width:100%;background:var(--paper-50);color:var(--clay-700);border:none;border-radius:14px;padding:17px 24px;font-family:var(--font-sans);font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 8px 22px -8px color-mix(in oklab, var(--ink) 70%, transparent);" style-active="transform:translateY(1px);background:var(--paper-100);">continuar</button>
+      </sc-if>
+
+      <!-- PERGUNTA (esteira · Q1–Q6 · faturamento · canal) -->
+      <sc-if value="{{ isQuestion }}">
+        <h2 style="font-family:var(--font-sans);font-weight:600;font-size:20px;line-height:1.3;color:var(--paper-50);margin:0 0 6px;text-wrap:balance;max-width:28ch;">{{ qTitle }}</h2>
+        <div style="display:flex;flex-direction:column;gap:11px;width:100%;">
+          <sc-for list="{{ qOptions }}" as="opt" hint-placeholder-count="4">
+            <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}">{{ opt.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ showQuestionContinue }}">
+          <button type="button" onClick="{{ continueQuestion }}" style="margin-top:8px;width:100%;background:var(--paper-50);color:var(--clay-700);border:none;border-radius:14px;padding:15px 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;cursor:pointer;" style-active="transform:translateY(1px);">continuar</button>
+        </sc-if>
+      </sc-if>
+
+      <!-- SUSPENSE -->
+      <sc-if value="{{ isSuspense }}">
+        <div style="width:46px;height:46px;border-radius:50%;border:3px solid rgba(250,248,247,0.18);border-top-color:var(--paper-50);animation:flyspin .9s linear infinite;margin-bottom:6px;"></div>
+        <p style="font-size:17px;line-height:1.55;color:var(--paper-100);margin:0;max-width:26ch;">{{ suspenseText }}</p>
+      </sc-if>
+
+      <!-- RESULTADO -->
+      <sc-if value="{{ isResult }}">
+        <div style="font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--sand);">seu diagnóstico</div>
+        <h1 style="font-family:var(--font-display);font-weight:400;font-size:34px;line-height:1.05;letter-spacing:-0.01em;color:var(--paper-50);margin:6px 0 6px;text-wrap:balance;">{{ resTitle }}</h1>
+        <div style="display:flex;flex-direction:column;gap:12px;width:100%;">
+          <sc-for list="{{ resParas }}" as="para" hint-placeholder-count="2">
+            <p style="font-size:15px;line-height:1.6;color:rgba(237,233,231,0.84);margin:0;">{{ para }}</p>
+          </sc-for>
+        </div>
+
+        <div style="width:48px;height:1px;background:rgba(178,162,142,0.4);margin:8px 0;"></div>
+
+        <div style="font-size:13px;font-weight:500;letter-spacing:0.01em;color:var(--sand);">próximos passos</div>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--paper-100);margin:0;">{{ resProximos }}</p>
+        <button type="button" onClick="{{ baixar }}" style="width:100%;background:var(--paper-50);color:var(--clay-700);border:none;border-radius:14px;padding:16px 22px;font-family:var(--font-sans);font-size:15.5px;font-weight:600;cursor:pointer;box-shadow:0 8px 22px -8px color-mix(in oklab, var(--ink) 70%, transparent);" style-active="transform:translateY(1px);background:var(--paper-100);">{{ baixarLabel }}</button>
+
+        <div style="width:48px;height:1px;background:rgba(178,162,142,0.4);margin:8px 0;"></div>
+
+        <p style="font-size:14px;line-height:1.6;color:rgba(237,233,231,0.78);margin:0;">{{ resPonte }}</p>
+        <button type="button" onClick="{{ falar }}" style="width:100%;background:transparent;color:var(--paper-50);border:1.5px solid rgba(237,233,231,0.55);border-radius:14px;padding:15px 22px;font-family:var(--font-sans);font-size:15.5px;font-weight:600;cursor:pointer;" style-active="transform:translateY(1px);background:rgba(250,248,247,0.06);">falar com a digital<strong style="font-weight:700;">flly</strong></button>
+
+        <button type="button" onClick="{{ restart }}" style="background:none;border:none;color:var(--sand);font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;margin-top:10px;font-family:var(--font-sans);">refazer o diagnóstico</button>
+      </sc-if>
+
+      </div>
+    </div>
+
+    <!-- dev overlay -->
+    <sc-if value="{{ devMode }}">
+      <pre style="position:absolute;left:0;right:0;bottom:0;margin:0;max-height:46%;overflow:auto;background:rgba(23,12,6,0.92);color:#9fcf8f;font-family:var(--font-mono);font-size:10px;line-height:1.5;padding:12px 14px;text-align:left;white-space:pre-wrap;border-top:1px solid rgba(178,162,142,0.3);">{{ leadJson }}</pre>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 470, &quot;height&quot;: 800 },
+  &quot;autoAdvance&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Comportamento&quot; },
+  &quot;devMode&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Comportamento&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    idx: 0,
+    answers: {},
+    nameInput: '',
+    igInput: '',
+    waInput: '',
+    selecting: null,
+    baixado: false,
+    error: '',
+  };
+
+  FLOW = [
+    { id: 'capa', type: 'cover' },
+    { id: 'nome', type: 'name' },
+    { id: 'contato', type: 'contact' },
+    { id: 'esteira', type: 'question', step: 1 },
+    { id: 'q1', type: 'question', step: 2 },
+    { id: 'q2', type: 'question', step: 3 },
+    { id: 'q3', type: 'question', step: 4 },
+    { id: 'q4', type: 'question', step: 5 },
+    { id: 'q5', type: 'question', step: 6 },
+    { id: 'q6', type: 'question', step: 7 },
+    { id: 'faturamento', type: 'question', step: 8 },
+    { id: 'canal', type: 'question', step: 9 },
+    { id: 'suspense', type: 'suspense' },
+    { id: 'resultado', type: 'result' },
+  ];
+
+  PESO = { q1: 2, q2: 1, q3: 1, q4: 1, q5: 1, q6: 1 };
+
+  Q = {
+    esteira: { title: 'antes de tudo: como tá montada sua esteira de produtos hoje?', options: [
+      { label: 'tenho só um produto', value: 'esteira_unica' },
+      { label: 'entrada + principal (sem o mais caro)', value: 'sem_topo' },
+      { label: 'principal + mais caro (sem entrada)', value: 'sem_entrada' },
+      { label: 'completa: entrada, principal e mais caro', value: 'esteira_completa' },
+    ] },
+    q1: { title: 'qual frase mais descreve o seu conteúdo hoje?', options: [
+      { label: 'atrai gente, mas quase nunca puxa pra uma compra', value: 'entrada' },
+      { label: 'entrega valor, mas não empurra quem me acompanha pro produto principal', value: 'principal' },
+      { label: 'ensina muito, mas nunca posiciona meu produto mais caro', value: 'mais_caro' },
+      { label: 'é variado, mas eu não sei o que cada post deveria vender', value: 'sem_estrutura' },
+    ] },
+    q2: { title: 'que tipo de conteúdo quase nunca aparece no seu feed?', options: [
+      { label: 'conteúdo que chama pra uma oferta barata e direta', value: 'entrada' },
+      { label: 'conteúdo de prova e quebra de objeção do produto principal', value: 'principal' },
+      { label: 'conteúdo que posiciona e filtra cliente pro produto mais caro', value: 'mais_caro' },
+      { label: 'não sei dizer, meu feed é de tudo um pouco', value: 'sem_estrutura' },
+    ] },
+    q3: { title: 'depois que alguém compra seu produto mais barato, o seu conteúdo:', options: [
+      { label: 'nem tenho conteúdo que gere essa primeira compra', value: 'entrada' },
+      { label: 'não tem nada que apresente o próximo passo pra ela', value: 'principal' },
+      { label: 'já parte pro mais caro, sem construir o caminho', value: 'mais_caro' },
+      { label: 'segue igual, não muda em nada', value: 'sem_estrutura' },
+    ] },
+    q4: { title: 'o seu produto mais caro aparece no conteúdo como?', options: [
+      { label: 'não aparece, eu quase não falo dele', value: 'mais_caro' },
+      { label: 'com promoção e link aberto, igual aos outros', value: 'mais_caro' },
+      { label: 'só quando alguém pergunta', value: 'mais_caro' },
+      { label: 'não tenho um produto mais caro na esteira', value: 'sem_estrutura' },
+    ] },
+    q5: { title: 'qual tipo de conteúdo você sente mais dificuldade de fazer?', options: [
+      { label: 'o que transforma audiência em primeira compra', value: 'entrada' },
+      { label: 'o que faz quem já comprou subir para o próximo nível', value: 'principal' },
+      { label: 'o que vende o produto mais caro sem soar desesperada', value: 'mais_caro' },
+      { label: 'qualquer conteúdo com um objetivo de venda claro', value: 'sem_estrutura' },
+    ] },
+    q6: { title: 'se você parasse de postar por 30 dias, suas vendas:', options: [
+      { label: 'dependo do conteúdo do barato, pararia junto', value: 'entrada' },
+      { label: 'o barato segue, mas nada sobe', value: 'principal' },
+      { label: 'só o que já está em conversa fecharia', value: 'mais_caro' },
+      { label: 'não faço ideia do que sustenta o quê', value: 'sem_estrutura' },
+    ] },
+    faturamento: { title: 'qual seu faturamento médio mensal hoje?', options: [
+      { label: 'até R$ 5 mil', value: 'fat_1' },
+      { label: 'R$ 5 a 20 mil', value: 'fat_2' },
+      { label: 'R$ 20 a 30 mil', value: 'fat_3' },
+      { label: 'R$ 30 a 50 mil', value: 'fat_4' },
+      { label: 'acima de R$ 50 mil', value: 'fat_5' },
+    ] },
+    canal: { title: 'hoje, de onde vem a maior parte do seu faturamento?', options: [
+      { label: 'do meu conteúdo orgânico', value: 'canal_conteudo' },
+      { label: 'de tráfego pago / anúncios', value: 'canal_trafego' },
+      { label: 'de indicação, parceria ou comercial (venda no 1:1)', value: 'canal_comercial' },
+      { label: 'não vendo de forma consistente por nenhum canal', value: 'canal_nenhum' },
+    ] },
+  };
+
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._sel); }
+
+  cur() { return this.FLOW[this.state.idx]; }
+
+  next = () => {
+    clearTimeout(this._sel);
+    this.setState(
+      (s) => ({ idx: Math.min(s.idx + 1, this.FLOW.length - 1), selecting: null, error: '' }),
+      () => {
+        if (this.cur().type === 'suspense') {
+          clearTimeout(this._t);
+          this._t = setTimeout(() => this.next(), 1400);
+        }
+      }
+    );
+  };
+
+  back = () => {
+    clearTimeout(this._t);
+    clearTimeout(this._sel);
+    this.setState((s) => ({ idx: Math.max(0, s.idx - 1), selecting: null, error: '' }));
+  };
+
+  restart = () => {
+    clearTimeout(this._t);
+    clearTimeout(this._sel);
+    this.setState({ idx: 0, answers: {}, nameInput: '', igInput: '', waInput: '', selecting: null, baixado: false, error: '' });
+  };
+
+  selectOption = (value) => {
+    const id = this.cur().id;
+    this.setState((s) => ({ answers: { ...s.answers, [id]: value }, selecting: value, error: '' }));
+    if (this.props.autoAdvance !== false) {
+      clearTimeout(this._sel);
+      this._sel = setTimeout(() => this.next(), 340);
+    }
+  };
+
+  submitName = () => {
+    const n = (this.state.nameInput || '').trim();
+    if (!n) { this.setState({ error: 'me diz seu nome pra continuar' }); return; }
+    this.setState((s) => ({ answers: { ...s.answers, nome: n } }), () => this.next());
+  };
+
+  submitContact = () => {
+    const ig = (this.state.igInput || '').trim();
+    const wa = (this.state.waInput || '').trim();
+    if (!ig || !wa) { this.setState({ error: 'preencha instagram e whatsapp pra continuar' }); return; }
+    this.setState((s) => ({ answers: { ...s.answers, instagram: ig, whatsapp: wa } }), () => this.next());
+  };
+
+  baixar = () => {
+    this.setState({ baixado: true });
+    const r = this.result();
+    const copy = this.resultCopy(r.bucket, r.variante, this.state.answers.canal);
+    if (!copy.materialFile) return;
+    try {
+      const a = document.createElement('a');
+      a.href = copy.materialFile;
+      a.download = copy.materialFile.split('/').pop();
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (e) {
+      window.open(copy.materialFile, '_blank');
+    }
+  };
+
+  falar = () => { /* protótipo: ligar ao link real (wa.me / comercial) */ };
+
+  result() {
+    const a = this.state.answers;
+    const pts = { entrada: 0, principal: 0, mais_caro: 0, sem_estrutura: 0 };
+    ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'].forEach((q) => {
+      const v = a[q];
+      if (v && pts[v] != null) pts[v] += this.PESO[q];
+    });
+    const max = Math.max(...Object.values(pts));
+    const tied = Object.keys(pts).filter((k) => pts[k] === max);
+    let bucket = tied.length > 1 ? a.q1 : Object.keys(pts).reduce((x, y) => (pts[x] >= pts[y] ? x : y));
+    if (!bucket) bucket = 'sem_estrutura';
+    let variante = null;
+    if (bucket === 'sem_estrutura') {
+      variante = (a.canal === 'canal_trafego' || a.canal === 'canal_comercial') ? 'quente' : 'nutricao';
+    }
+    return { pts, bucket, variante };
+  }
+
+  resultCopy(bucket, variante, canal) {
+    if (bucket === 'entrada') return {
+      title: 'falta conteúdo de recrutamento',
+      paras: ['seu conteúdo atrai, mas para por aí — junta audiência e não transforma ninguém em comprador. você tem público, não base de clientes. o tipo de conteúdo que falta é o que faz a primeira venda acontecer.'],
+      proximos: 'baixe o material como vender seu produto de entrada. ele mostra o tipo de conteúdo de recrutamento que falta no seu feed — e como começar a aplicar.',
+      material: 'Como vender seu produto de entrada',
+      materialFile: 'materiais/guia-produto-de-entrada.pdf',
+      ponte: 'montar você até consegue. manter conteúdo de recrutamento girando toda semana, com gente nova entrando sempre, é trabalho de quem faz isso o dia inteiro. é mais rápido contratar quem já sabe do que virar operária do próprio feed.',
+    };
+    if (bucket === 'principal') return {
+      title: 'falta conteúdo de travessia',
+      paras: ['você recruta, mas ninguém sobe. falta o conteúdo que faz a travessia: prova, quebra de objeção e a ponte de um produto pro próximo. sem isso, cada produto vira uma ilha.'],
+      proximos: 'baixe o material como vender seu produto principal. ele mostra como construir o conteúdo de travessia que faz quem comprou subir de nível.',
+      material: 'Como vender seu produto principal',
+      materialFile: 'materiais/guia-produto-principal.pdf',
+      ponte: 'o passo a passo você segue. manter prova, objeção e travessia girando toda semana, pra sempre ter gente sendo aquecida pro principal, é serviço. contrate quem já opera isso.',
+    };
+    if (bucket === 'mais_caro') return {
+      title: 'falta conteúdo de posicionamento',
+      paras: ['você ensina muito e vende pouco do que é mais caro. ele quase não aparece — ou aparece com a linguagem errada (promoção, link aberto). falta o conteúdo de posicionamento: autoridade, transformação profunda e filtro de cliente, em vez de empurrar preço.'],
+      proximos: 'baixe o material como vender seu produto mais caro. ele mostra como construir o conteúdo de posicionamento que vende o caro sem promoção.',
+      material: 'Como vender seu produto mais caro',
+      materialFile: 'materiais/guia-mentoria.pdf',
+      ponte: 'um post seletivo você faz. sustentar posicionamento mês após mês, pra atrair e qualificar os poucos certos, é trabalho fino e constante. contrate quem sabe fazer isso.',
+    };
+    const base = 'seu feed existe, mas nenhum post tem função clara. você publica sem saber o que cada conteúdo deveria vender — então nada vende de propósito. o que falta não é volume, é função.';
+    if (variante === 'quente') {
+      const via = canal === 'canal_trafego' ? 'tráfego' : 'comercial';
+      return {
+        title: 'falta conteúdo com função',
+        paras: [base, 'e olha o ponto: você já vende — por ' + via + '. seu negócio funciona; só o conteúdo está parado. ele é o ativo mais caro que você tem largado no chão.'],
+        proximos: 'baixe o material o ativo que seu negócio deixou parado. ele mostra como dar função a cada post, pra seu conteúdo finalmente vender.',
+        material: 'O ativo que seu negócio deixou parado',
+        materialFile: 'materiais/guia-conteudo-com-funcao.pdf',
+        ponte: 'organizar uma semana você faz. transformar o conteúdo num ativo que vende sozinho, toda semana, é o que a gente faz pra quem já tem o negócio rodando. contrate quem opera isso.',
+      };
+    }
+    return {
+      title: 'falta conteúdo com função',
+      paras: [base, 'antes de mexer no conteúdo, vale olhar o que vem antes dele: sua oferta e seu público. conteúdo organiza um negócio que já vende — não cria venda do zero.'],
+      proximos: 'baixe o material antes do conteúdo vem a base. ele mostra a base que precisa estar de pé pra qualquer post vender.',
+      material: 'Antes do conteúdo vem a base',
+      materialFile: 'materiais/guia-base.pdf',
+      ponte: 'quando essa base estiver de pé, o conteúdo é o próximo passo — e aí faz sentido ter quem saiba operar isso por você.',
+    };
+  }
+
+  optionStyle(selected) {
+    return {
+      width: '100%',
+      boxSizing: 'border-box',
+      textAlign: 'center',
+      padding: '15px 18px',
+      borderRadius: '13px',
+      cursor: 'pointer',
+      fontFamily: 'var(--font-sans)',
+      fontSize: '14.5px',
+      lineHeight: 1.4,
+      border: '1.5px solid ' + (selected ? 'var(--paper-50)' : 'rgba(178,162,142,0.3)'),
+      background: selected ? 'var(--paper-50)' : 'rgba(250,248,247,0.05)',
+      color: selected ? 'var(--clay-700)' : 'var(--paper-100)',
+      fontWeight: selected ? 600 : 400,
+      transition: 'background .18s ease, border-color .18s ease, color .18s ease, transform .12s ease',
+    };
+  }
+
+  renderVals() {
+    const f = this.cur();
+    const a = this.state.answers;
+    const nome = a.nome || '';
+
+    const out = {
+      screenKey: String(this.state.idx),
+      isCover: f.type === 'cover',
+      isName: f.type === 'name',
+      isContact: f.type === 'contact',
+      isQuestion: f.type === 'question',
+      isSuspense: f.type === 'suspense',
+      isResult: f.type === 'result',
+      canGoBack: this.state.idx > 0 && f.type !== 'suspense' && f.type !== 'result' && f.type !== 'cover',
+      onBack: this.back,
+      start: this.next,
+      error: this.state.error,
+      nome,
+      nameInput: this.state.nameInput,
+      onNameInput: (e) => this.setState({ nameInput: e.target.value }),
+      submitName: this.submitName,
+      igInput: this.state.igInput,
+      waInput: this.state.waInput,
+      onIg: (e) => this.setState({ igInput: e.target.value }),
+      onWa: (e) => this.setState({ waInput: e.target.value }),
+      submitContact: this.submitContact,
+      restart: this.restart,
+      baixar: this.baixar,
+      falar: this.falar,
+      contactEyebrow: (nome ? nome + ', ' : '') + 'antes de começar',
+      contactTitle: 'preciso dos seus dados abaixo',
+      suspenseText: 'pronto' + (nome ? ', ' + nome : '') + '. cruzando suas respostas pra achar o tipo de conteúdo que falta no seu feed…',
+      showProgress: f.type === 'question',
+      progressPct: '0%',
+      qOptions: [],
+      showQuestionContinue: false,
+      devMode: !!this.props.devMode,
+      leadJson: '',
+    };
+
+    if (f.type === 'question') {
+      out.stepLabel = 'passo ' + f.step + ' de 9';
+      out.progressPct = Math.round((f.step / 9) * 100) + '%';
+      const q = this.Q[f.id];
+      out.qTitle = q.title;
+      out.qOptions = q.options.map((o) => {
+        const selected = a[f.id] === o.value || this.state.selecting === o.value;
+        return {
+          label: o.label,
+          value: o.value,
+          onClick: () => this.selectOption(o.value),
+          style: this.optionStyle(selected),
+        };
+      });
+      out.continueQuestion = this.next;
+      out.showQuestionContinue = this.props.autoAdvance === false && !!a[f.id];
+    }
+
+    if (f.type === 'result') {
+      const r = this.result();
+      const copy = this.resultCopy(r.bucket, r.variante, a.canal);
+      out.resTitle = copy.title;
+      out.resParas = copy.paras;
+      out.resProximos = copy.proximos;
+      out.resMaterial = copy.material;
+      out.baixarLabel = this.state.baixado ? '✓ baixando “' + copy.material + '”…' : 'baixar material';
+      out.resPonte = copy.ponte;
+    }
+
+    if (this.props.devMode) {
+      const r = this.result();
+      out.leadJson = JSON.stringify({
+        nome: a.nome || null,
+        instagram: a.instagram || null,
+        whatsapp: a.whatsapp || null,
+        esteira: a.esteira || null,
+        q1: a.q1 || null, q2: a.q2 || null, q3: a.q3 || null,
+        q4: a.q4 || null, q5: a.q5 || null, q6: a.q6 || null,
+        pts: r.pts,
+        resultado: r.bucket,
+        resultado_variante: r.variante,
+        faturamento: a.faturamento || null,
+        canal: a.canal || null,
+        prioridade: ['fat_3', 'fat_4', 'fat_5'].includes(a.faturamento),
+      }, null, 2);
+    }
+
+    return out;
+  }
+}
+</script>
+</body>
+</html>

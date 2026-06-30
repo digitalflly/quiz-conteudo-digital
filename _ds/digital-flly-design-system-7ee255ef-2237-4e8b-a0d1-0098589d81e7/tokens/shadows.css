@@ -1,0 +1,18 @@
+/* Shadows ── warm-toned (browned), never neutral grey.
+   Built from the ink color so they sit naturally on paper. */
+:root {
+  --shadow-xs:  0 1px 2px 0 color-mix(in oklab, var(--ink) 6%, transparent);
+  --shadow-sm:  0 2px 4px -1px color-mix(in oklab, var(--ink) 8%, transparent),
+                0 1px 2px -1px color-mix(in oklab, var(--ink) 6%, transparent);
+  --shadow-md:  0 6px 14px -4px color-mix(in oklab, var(--ink) 12%, transparent),
+                0 2px 4px -2px color-mix(in oklab, var(--ink) 8%, transparent);
+  --shadow-lg:  0 16px 32px -8px color-mix(in oklab, var(--ink) 18%, transparent),
+                0 4px 8px -4px color-mix(in oklab, var(--ink) 10%, transparent);
+  --shadow-xl:  0 32px 64px -16px color-mix(in oklab, var(--ink) 24%, transparent);
+
+  /* Inset (for sunken inputs / pressed states) */
+  --shadow-inset-sm: inset 0 1px 2px 0 color-mix(in oklab, var(--ink) 10%, transparent);
+
+  /* Focus ring */
+  --ring: 0 0 0 3px var(--focus-ring);
+}

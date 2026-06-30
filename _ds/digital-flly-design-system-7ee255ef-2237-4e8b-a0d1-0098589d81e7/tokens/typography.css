@@ -1,0 +1,46 @@
+/* Typography ───────────────────────────────────────────
+   Two families:
+     • Berton  — display / editorial. Hand-pressed, textured.
+                 NEVER underline; use border-bottom instead.
+     • Poppins — UI / body. Geometric sans, set tight on UI,
+                 loose on long-form. */
+
+:root {
+  --font-display: "Berton", "Berton Voyage", Georgia, serif;
+  --font-display-italic: "Berton Voyage", "Berton", Georgia, serif;
+  --font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* ── Type scale (UI / Poppins, in rem-equivalents) ── */
+  --text-xs:   0.75rem;   /* 12 */
+  --text-sm:   0.875rem;  /* 14 */
+  --text-base: 1rem;      /* 16 */
+  --text-md:   1.125rem;  /* 18 */
+  --text-lg:   1.25rem;   /* 20 */
+  --text-xl:   1.5rem;    /* 24 */
+  --text-2xl:  2rem;      /* 32 */
+
+  /* ── Display scale (Berton) ── */
+  --display-sm: 2.25rem;  /* 36 */
+  --display-md: 3rem;     /* 48 */
+  --display-lg: 4.5rem;   /* 72 */
+  --display-xl: 6rem;     /* 96 */
+
+  /* ── Weights ── */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ── Line heights ── */
+  --leading-tight:  1.1;
+  --leading-snug:   1.25;
+  --leading-normal: 1.5;
+  --leading-loose:  1.7;
+
+  /* ── Tracking ── */
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-eyebrow: 0.18em;
+}

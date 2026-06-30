@@ -1,0 +1,225 @@
+/* Digital Flly core component styles
+   ─ All visual rules live here so component JSX stays presentational.
+   ─ Class prefix: `b-` (short for Digital Flly). */
+
+/* ── Button ─────────────────────────────────────────── */
+.b-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.005em;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+.b-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+.b-btn:active { transform: translateY(1px); }
+.b-btn[disabled], .b-btn[aria-disabled="true"] {
+  opacity: 0.45; cursor: not-allowed; transform: none;
+}
+
+/* sizes */
+.b-btn--sm { height: 32px; padding: 0 12px; font-size: 13px; }
+.b-btn--md { height: 40px; padding: 0 18px; font-size: 14px; }
+.b-btn--lg { height: 48px; padding: 0 24px; font-size: 15px; }
+
+/* variants */
+.b-btn--primary {
+  background: var(--brand); color: var(--text-on-brand);
+  border-color: var(--brand);
+}
+.b-btn--primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+.b-btn--primary:active { background: var(--brand-press); }
+
+.b-btn--secondary {
+  background: var(--surface); color: var(--text-strong);
+  border-color: var(--border-strong);
+}
+.b-btn--secondary:hover { background: var(--paper-100); }
+.b-btn--secondary:active { background: var(--paper-200); }
+
+.b-btn--ghost {
+  background: transparent; color: var(--text-strong); border-color: transparent;
+}
+.b-btn--ghost:hover { background: var(--paper-100); }
+
+.b-btn--danger {
+  background: var(--danger); color: var(--paper-50); border-color: var(--danger);
+}
+.b-btn--danger:hover { background: color-mix(in oklab, var(--danger) 88%, black); }
+
+.b-btn--pill { border-radius: var(--radius-pill); }
+.b-btn--block { width: 100%; }
+
+/* ── IconButton ─────────────────────────────────────── */
+.b-iconbtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--text-strong);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md); cursor: pointer;
+  transition: background var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out);
+}
+.b-iconbtn:hover { background: var(--paper-100); }
+.b-iconbtn:focus-visible { outline: none; box-shadow: var(--ring); }
+.b-iconbtn--sm { width: 32px; height: 32px; }
+.b-iconbtn--md { width: 40px; height: 40px; }
+.b-iconbtn--lg { width: 48px; height: 48px; }
+.b-iconbtn--outline { border-color: var(--border); }
+.b-iconbtn--solid { background: var(--ink); color: var(--paper-50); }
+.b-iconbtn--solid:hover { background: var(--clay-700); }
+
+/* ── Input ──────────────────────────────────────────── */
+.b-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--font-sans); }
+.b-field__label {
+  font-size: 12px; font-weight: 500; color: var(--text-strong);
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+}
+.b-field__hint { font-size: 12px; color: var(--text-muted); }
+.b-field__error { font-size: 12px; color: var(--danger); }
+
+.b-input, .b-textarea, .b-select {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-strong);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  transition: border-color var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out);
+}
+.b-input::placeholder, .b-textarea::placeholder { color: var(--paper-500); }
+.b-input:hover, .b-textarea:hover, .b-select:hover { border-color: var(--border-strong); }
+.b-input:focus, .b-textarea:focus, .b-select:focus {
+  outline: none; border-color: var(--clay-500); box-shadow: var(--ring);
+}
+.b-input[aria-invalid="true"], .b-textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.b-textarea { min-height: 96px; resize: vertical; line-height: var(--leading-normal); }
+.b-input--lg { padding: 14px 16px; font-size: 15px; }
+
+/* ── Card ───────────────────────────────────────────── */
+.b-card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+  font-family: var(--font-sans);
+  color: var(--text);
+}
+.b-card--bare    { background: transparent; border-color: var(--border); }
+.b-card--raised  { box-shadow: var(--shadow-md); border-color: transparent; }
+.b-card--inverse { background: var(--ink); color: var(--text-inverse); border: 0; }
+.b-card--inverse .b-card__title { color: var(--paper-50); }
+
+.b-card__eyebrow {
+  font-size: 11px; font-weight: 500; letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+.b-card__title {
+  font-family: var(--font-display); font-size: var(--text-2xl);
+  line-height: var(--leading-tight); color: var(--text-strong);
+  margin: 0 0 var(--space-2) 0;
+}
+.b-card__body { line-height: var(--leading-normal); }
+
+/* ── Badge / Tag ────────────────────────────────────── */
+.b-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  padding: 4px 10px; border-radius: var(--radius-pill);
+  background: var(--paper-200); color: var(--text-strong);
+  border: 1px solid var(--border-subtle);
+}
+.b-badge--solid    { background: var(--ink); color: var(--paper-50); border-color: var(--ink); }
+.b-badge--brand    { background: var(--clay-100); color: var(--clay-700); border-color: transparent; }
+.b-badge--success  { background: var(--success-bg); color: var(--success); border-color: transparent; }
+.b-badge--warning  { background: var(--warning-bg); color: var(--warning); border-color: transparent; }
+.b-badge--danger   { background: var(--danger-bg);  color: var(--danger);  border-color: transparent; }
+.b-badge--info     { background: var(--info-bg);    color: var(--info);    border-color: transparent; }
+.b-badge--outline  { background: transparent; }
+
+/* ── Avatar ─────────────────────────────────────────── */
+.b-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--clay-200); color: var(--clay-700);
+  font-family: var(--font-sans); font-weight: 600;
+  border-radius: 999px; overflow: hidden; flex: none;
+  user-select: none;
+}
+.b-avatar > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.b-avatar--xs { width: 24px; height: 24px; font-size: 10px; }
+.b-avatar--sm { width: 32px; height: 32px; font-size: 12px; }
+.b-avatar--md { width: 40px; height: 40px; font-size: 14px; }
+.b-avatar--lg { width: 56px; height: 56px; font-size: 18px; }
+.b-avatar--xl { width: 80px; height: 80px; font-size: 24px; }
+.b-avatar-group { display: inline-flex; }
+.b-avatar-group > .b-avatar {
+  border: 2px solid var(--surface); margin-left: -10px;
+}
+.b-avatar-group > .b-avatar:first-child { margin-left: 0; }
+
+/* ── Switch ─────────────────────────────────────────── */
+.b-switch {
+  position: relative; display: inline-block; width: 40px; height: 24px;
+  background: var(--paper-300); border-radius: 999px; cursor: pointer;
+  transition: background var(--duration-base) var(--ease-out);
+  border: 0; padding: 0;
+}
+.b-switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px; border-radius: 999px;
+  background: var(--surface); box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.b-switch[aria-checked="true"] { background: var(--brand); }
+.b-switch[aria-checked="true"]::after { transform: translateX(16px); }
+.b-switch:focus-visible { outline: none; box-shadow: var(--ring); }
+
+/* ── Divider ────────────────────────────────────────── */
+.b-divider {
+  border: 0; height: 1px; background: var(--border-subtle); margin: var(--space-6) 0;
+}
+.b-divider--strong { background: var(--border); }
+.b-divider--ornament {
+  height: 12px; background: none; display: flex;
+  align-items: center; justify-content: center; color: var(--bronze);
+  font-family: var(--font-display); font-size: 18px;
+}
+.b-divider--ornament::before, .b-divider--ornament::after {
+  content: ""; flex: 1; height: 1px; background: var(--border-subtle);
+  margin: 0 var(--space-4);
+}
+
+/* ── Eyebrow (small uppercase label) ────────────────── */
+.b-eyebrow {
+  display: inline-block; font-family: var(--font-sans); font-size: 11px;
+  font-weight: 500; letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase; color: var(--text-muted);
+}
+
+/* ── Quote (Berton Voyage italic block) ─────────────── */
+.b-quote {
+  font-family: var(--font-display-italic); font-style: italic;
+  font-size: 28px; line-height: 1.2; color: var(--clay-700);
+  border-left: 2px solid var(--bronze); padding-left: var(--space-5);
+}
+.b-quote__cite {
+  display: block; margin-top: var(--space-3); font-family: var(--font-sans);
+  font-style: normal; font-size: 12px; font-weight: 500;
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--text-muted);
+}

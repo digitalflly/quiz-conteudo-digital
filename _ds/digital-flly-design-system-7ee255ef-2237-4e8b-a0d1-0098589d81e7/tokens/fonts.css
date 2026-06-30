@@ -1,0 +1,63 @@
+/* Fonts ───────────────────────────────────────────────
+   Berton (Roman + Voyage) — hand-pressed display family used for
+   headlines, quotes and accent moments. NOTE: trial copies — the
+   underline glyph contains a "DESIGNFONTES.COM" watermark, so we
+   never apply text-decoration: underline to Berton-set text; use
+   border-bottom on the wrapping element instead.
+
+   Poppins — geometric sans for UI / body text. */
+
+@font-face {
+  font-family: "Berton";
+  src: url("../assets/fonts/Berton-Roman-trial.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Berton";
+  src: url("../assets/fonts/Berton-Voyage-trial.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Voyage is treated as its own family too — for hero italic moments
+   we sometimes want to set it directly without depending on italic. */
+@font-face {
+  font-family: "Berton Voyage";
+  src: url("../assets/fonts/Berton-Voyage-trial.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

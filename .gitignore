@@ -1,0 +1,14 @@
+# sistema operacional
+.DS_Store
+Thumbs.db
+
+# logs e dependências (não usadas, mas por garantia)
+node_modules/
+*.log
+
+# arquivos internos da ferramenta de design
+.thumbnail
+scraps/
+
+# materiais-fonte do projeto (mantidos fora do deploy)
+uploads/
