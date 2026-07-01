@@ -141,6 +141,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 470, &quot;height&quot;: 800 },
+  &quot;sheetsWebhookUrl&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://script.google.com/a/macros/digitalflly.com/s/AKfycbyGgtJWBMU69HsqxRcWFynfe6EbNBubILp43Kjmxzcp2kPgKs54oG60I1db7PpBgliGmQ/exec&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Integração&quot; },
   &quot;autoAdvance&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Comportamento&quot; },
   &quot;devMode&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Comportamento&quot; }
 }">
@@ -152,6 +153,7 @@ class Component extends DCLogic {
     igInput: '',
     waInput: '',
     selecting: null,
+    answersIdx: {},
     baixado: false,
     error: '',
   };
@@ -242,10 +244,12 @@ class Component extends DCLogic {
     this.setState(
       (s) => ({ idx: Math.min(s.idx + 1, this.FLOW.length - 1), selecting: null, error: '' }),
       () => {
-        if (this.cur().type === 'suspense') {
+        const t = this.cur().type;
+        if (t === 'suspense') {
           clearTimeout(this._t);
           this._t = setTimeout(() => this.next(), 1400);
         }
+        if (t === 'result') { this.finishLead(); }
       }
     );
   };
@@ -259,12 +263,14 @@ class Component extends DCLogic {
   restart = () => {
     clearTimeout(this._t);
     clearTimeout(this._sel);
-    this.setState({ idx: 0, answers: {}, nameInput: '', igInput: '', waInput: '', selecting: null, baixado: false, error: '' });
+    this.leadId = null;
+    this._finished = false;
+    this.setState({ idx: 0, answers: {}, nameInput: '', igInput: '', waInput: '', selecting: null, answersIdx: {}, baixado: false, error: '' });
   };
 
-  selectOption = (value) => {
+  selectOption = (value, idx) => {
     const id = this.cur().id;
-    this.setState((s) => ({ answers: { ...s.answers, [id]: value }, selecting: value, error: '' }));
+    this.setState((s) => ({ answers: { ...s.answers, [id]: value }, answersIdx: { ...s.answersIdx, [id]: idx }, selecting: idx, error: '' }));
     if (this.props.autoAdvance !== false) {
       clearTimeout(this._sel);
       this._sel = setTimeout(() => this.next(), 340);
@@ -281,8 +287,79 @@ class Component extends DCLogic {
     const ig = (this.state.igInput || '').trim();
     const wa = (this.state.waInput || '').trim();
     if (!ig || !wa) { this.setState({ error: 'preencha instagram e whatsapp pra continuar' }); return; }
+    // fase 1: salva o contato assim que a pessoa preenche (mesmo que abandone depois)
+    this.leadId = this.leadId || this._genId();
+    this.sendLead({
+      lead_id: this.leadId,
+      status: 'contato',
+      data_contato: new Date().toLocaleString('pt-BR'),
+      nome: this.state.answers.nome || '',
+      instagram: ig,
+      whatsapp: wa,
+    });
     this.setState((s) => ({ answers: { ...s.answers, instagram: ig, whatsapp: wa } }), () => this.next());
   };
+
+  _genId() {
+    return 'lead_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+  }
+
+  sendLead(payload) {
+    const WEBHOOK_URL = 'https://script.google.com/a/macros/digitalflly.com/s/AKfycbyGgtJWBMU69HsqxRcWFynfe6EbNBubILp43Kjmxzcp2kPgKs54oG60I1db7PpBgliGmQ/exec';
+    const url = (this.props.sheetsWebhookUrl || WEBHOOK_URL || '').trim();
+    if (!url) {
+      console.warn('[quiz] sheetsWebhookUrl vazio — lead NÃO enviado. Cole a URL /exec no Tweak "Integração".', payload);
+      return;
+    }
+    const body = JSON.stringify(payload);
+    // fetch no-cors é o caminho mais confiável com o Apps Script (segue o redirect 302)
+    let sent = false;
+    try {
+      fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: body,
+        keepalive: true,
+      })
+        .then(function () { console.log('[quiz] lead via fetch: enviado', payload); })
+        .catch(function (e) { console.warn('[quiz] falha no fetch do lead', e); });
+      sent = true;
+    } catch (e) { console.warn('[quiz] erro no fetch do lead', e); }
+    // reforço: beacon (garante entrega mesmo se a pessoa fechar a aba)
+    try {
+      if (navigator.sendBeacon) {
+        const ok = navigator.sendBeacon(url, new Blob([body], { type: 'text/plain;charset=utf-8' }));
+        console.log('[quiz] lead via beacon:', ok ? 'ok' : 'falhou');
+      }
+    } catch (e) { if (!sent) console.warn('[quiz] erro sendLead', e); }
+  }
+
+  finishLead() {
+    if (this._finished) return;
+    this._finished = true;
+    const a = this.state.answers;
+    const r = this.result();
+    const copy = this.resultCopy(r.bucket, r.variante, a.canal);
+    // fase 2: atualiza a mesma linha com respostas + resultado
+    this.sendLead({
+      lead_id: this.leadId || this._genId(),
+      status: 'concluido',
+      data_conclusao: new Date().toLocaleString('pt-BR'),
+      nome: a.nome || '',
+      instagram: a.instagram || '',
+      whatsapp: a.whatsapp || '',
+      esteira: a.esteira || '',
+      q1: a.q1 || '', q2: a.q2 || '', q3: a.q3 || '',
+      q4: a.q4 || '', q5: a.q5 || '', q6: a.q6 || '',
+      faturamento: a.faturamento || '',
+      canal: a.canal || '',
+      resultado: r.bucket,
+      variante: r.variante || '',
+      prioridade: ['fat_3', 'fat_4', 'fat_5'].includes(a.faturamento) ? 'sim' : 'nao',
+      material: copy.material || '',
+    });
+  }
 
   baixar = () => {
     this.setState({ baixado: true });
@@ -433,12 +510,12 @@ class Component extends DCLogic {
       out.progressPct = Math.round((f.step / 9) * 100) + '%';
       const q = this.Q[f.id];
       out.qTitle = q.title;
-      out.qOptions = q.options.map((o) => {
-        const selected = a[f.id] === o.value || this.state.selecting === o.value;
+      out.qOptions = q.options.map((o, i) => {
+        const selected = this.state.answersIdx[f.id] === i;
         return {
           label: o.label,
           value: o.value,
-          onClick: () => this.selectOption(o.value),
+          onClick: () => this.selectOption(o.value, i),
           style: this.optionStyle(selected),
         };
       });
